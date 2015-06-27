@@ -1,8 +1,16 @@
 var os = require('os');
 var net = require('net');
-
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+	host : "localhost",
+	port : 1234,
+	user : "root",
+	password : "password"
+});
 var networkInterfaces = os.networkInterfaces();
-var port = 1234;
+var port = 1235;
+connection.connect();
+connection.query("use appusers");
 
 function callback(socket) {
 	var remoteAddress = socket.remoteAddress;
@@ -11,17 +19,29 @@ function callback(socket) {
 	socket.setNoDelay(true);
 	
 	var msg = "Connected: " +  remoteAddress +  " : " + remotePort;
-	/*
-	socket.write(msg);
-	console.log("Server -> Client: " + msg);*/
 	socket.on('data', function(data) {
-		console.log("Client -> Server: " + data.toString());
-		socket.write(data.toString());
-		console.log("Server -> Client: " + data.toString());
+		var strQuery = data.toString();
+		connection.query( strQuery, function(err, result){
+		if(err)	{
+			throw err;
+		}else{
+			//if((data.toString()).includes("name")){
+				var names = "";
+				for(var i = 0; i < result.length; i++){
+					names = names + ";" + result[i]['username'];
+				}
+				socket.write(names + ';'+ data.toString());
+			//}
+		}
+	  });
+		
 	});
 	
 	socket.on('end', function() {
 		console.log('disconnected from server');
+		connection.end(function(err){
+	  console.log("Connection terminated");
+  });
 	});
 }
 
