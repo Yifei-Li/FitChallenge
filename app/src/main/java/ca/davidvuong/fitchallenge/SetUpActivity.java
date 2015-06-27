@@ -43,12 +43,10 @@ public class SetUpActivity extends ActionBarActivity {
         timeOption = 1;
     }
 
-    public void setTimeOption2(View view){
-        timeOption = 2;
-    }
+    public void setTimeOption2(View view){  timeOption = 2; }
 
     public void setTimeOption3(View view){
-        timeOption = 3;
+        timeOption = 5;
     }
 
     public void onProceed(View view){
