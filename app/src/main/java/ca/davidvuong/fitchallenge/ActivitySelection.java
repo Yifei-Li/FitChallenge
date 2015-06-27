@@ -131,12 +131,12 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
                     (ipAddress >> 16 & 0xff),
                     (ipAddress >> 24 & 0xff));
 
-            Log.d("IPADDRESS", myIP);
+            //Log.d("IPADDRESS", myIP);
 
             //TODO:assemble string here
             String send1 =  "INSERT INTO users values( '"+ user + "','" + activity + "'," + 0 + ",'"+myIP+"');";
             String send2 = "SELECT * FROM users;";
-            Log.d("sending string", send1);
+            //Log.d("sending string", send1);
 
             //TODO: send TCP
 

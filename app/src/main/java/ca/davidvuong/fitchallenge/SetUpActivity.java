@@ -79,8 +79,8 @@ public class SetUpActivity extends ActionBarActivity {
                     bt2 = (Button)findViewById(R.id.Button2);
                     break;
             }
-            bt1.getBackground().clearColorFilter();
-            bt2.getBackground().clearColorFilter();
+            //bt1.getBackground().clearColorFilter();
+            //bt2.getBackground().clearColorFilter();
 
     }
 }

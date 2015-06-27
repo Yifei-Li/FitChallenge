@@ -2,8 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ca.davidvuong.fitchallenge.UserList"
-    android:background="#FFFFFF"
-    android:nestedScrollingEnabled="false">
+    android:background="#388E3C"
+    android:nestedScrollingEnabled="false"
+    android:gravity="center_horizontal"
+    android:touchscreenBlocksFocus="false">
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
@@ -12,11 +14,17 @@
         android:numColumns="1"
         android:stretchMode="columnWidth"
         android:gravity="center"
-        android:background="#ffb4b4b4"
-        android:layout_alignParentStart="true"
+        android:background="#388E3C"
+        android:layout_alignParentStart="false"
         android:drawSelectorOnTop="false"
         android:scrollingCache="false"
         android:layout_alignParentEnd="true"
-        android:verticalSpacing="0.5dp" />
+        android:verticalSpacing="20dp"
+        android:columnWidth="320dp"
+        android:clickable="false"
+        android:transitionGroup="false"
+        android:layout_marginTop="20dp"
+        android:fastScrollEnabled="false"
+        android:layout_marginLeft="3dp" />
 
 </RelativeLayout>

@@ -37,11 +37,10 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
 
         Intent i = getIntent();
         String input = i.getStringExtra("names");
-        String userName = i.getStringExtra("userName");
 
 
-        String[] array = input.split(";", 10);
-        newArray = Arrays.copyOfRange(array, 1, 8);
+        String[] array = input.split(";");
+        newArray = Arrays.copyOfRange(array, 1, (array.length-1));
         List<String> list = new ArrayList<String>(Arrays.asList(newArray));
         GridView grid = (GridView) findViewById(R.id.gridview);
         grid.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));
@@ -65,13 +64,14 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
         //TODO: do something after the connection is established
         //Log.d("Received challenge", output);
 
-        if (Arrays.asList(newArray).contains(output)) {
-            //TODO: Go to battle view
-
+        Intent i = new Intent(getApplicationContext(), SetUpActivity.class);
+        String name = output;
+        i.putExtra("name", name);
+        startActivity(i);
 
         }
 
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

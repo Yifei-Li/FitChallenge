@@ -37,6 +37,7 @@ public class Connecting extends ActionBarActivity implements OnTaskCompleted{
 
     public void processFinish(String result) {
         //TODO: do something here
+
         Log.d("Result", result);
     }
 

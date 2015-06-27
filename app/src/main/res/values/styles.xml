@@ -12,7 +12,7 @@
             <item name="actionBarStyle">@style/MyActionBar</item>
         </style>
 
-    <color name="orange">#F89406</color>
+    <color name="orange">#1E824C</color>
     <color name="blue">#303F9F</color>
 
 
