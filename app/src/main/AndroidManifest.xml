@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name=".ActivitySelection"
-            android:label="@string/title_activity_activity_selection" >
+            android:label="@string/title_activity_activity_selection"
+            android:theme="@style/CustomBlueActionBarTheme">
         </activity>
         <activity
             android:name=".SetUpActivity"
@@ -49,7 +50,7 @@
         </activity>
         <activity
             android:name=".Connecting"
-            android:label="@string/title_activity_connecting" >
+            android:label="@string/title_activity_connecting">
         </activity>
     </application>
 

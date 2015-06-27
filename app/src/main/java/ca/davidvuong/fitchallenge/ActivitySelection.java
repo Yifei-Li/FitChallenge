@@ -89,7 +89,7 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
 
     }*/
 
-    public class FindOthers extends AsyncTask<Context, Void, String> implements LocationListener {
+    public class FindOthers extends AsyncTask<Context, Void, String> /*implements LocationListener*/ {
         private ProgressDialog dialog = new ProgressDialog(ActivitySelection.this);
         private OnTaskCompleted listener;
 
@@ -97,8 +97,8 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
         String input = "";
         boolean isReady;
 
-        private double longitude;
-        private double latitude;
+        //private double longitude;
+        //private double latitude;
         private String activity;
         private String user;
         private LocationManager locationManager;
@@ -116,10 +116,10 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             }
 
         protected String doInBackground(Context... params) {
-            locationManager = (LocationManager) params[0].getSystemService(Context.LOCATION_SERVICE);
+            /*locationManager = (LocationManager) params[0].getSystemService(Context.LOCATION_SERVICE);
             Looper.prepare();
             locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-            Looper.loop();
+            Looper.loop();*/
 
             WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -186,14 +186,14 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
                 dialog.dismiss();
             }
 
-            Log.d("location", "longitude: " + longitude);
+            /*Log.d("location", "longitude: " + longitude);
             Log.d("location", "latitude: " + latitude);
-            Log.d("result", result);
+            Log.d("result", result);*/
             listener.processFinish(result);
 
         }
 
-        public void onLocationChanged(Location location) {
+        /*public void onLocationChanged(Location location) {
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             Log.d("location:", "it changed");
@@ -206,7 +206,7 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
 
         public void onProviderEnabled(String provider) {}
 
-        public void onProviderDisabled(String provider) {}
+        public void onProviderDisabled(String provider) {}*/
 
     }
 }

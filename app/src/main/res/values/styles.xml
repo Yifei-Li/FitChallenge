@@ -13,6 +13,8 @@
         </style>
 
     <color name="orange">#F89406</color>
+    <color name="blue">#303F9F</color>
+
 
         <!-- ActionBar styles -->
         <style name="MyActionBar"
@@ -20,6 +22,19 @@
             <item name="android:background">@color/orange</item>
             <item name="background">@color/orange</item>
         </style>
+
+    <style name="CustomBlueActionBarTheme"
+        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/ActionBar2</item>
+        <item name="actionBarStyle">@style/ActionBar2</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="ActionBar2"
+        parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/blue</item>
+        <item name="background">@color/blue</item>
+    </style>
 
 
 </resources>

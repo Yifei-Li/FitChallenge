@@ -32,7 +32,7 @@ public class Connecting extends ActionBarActivity implements OnTaskCompleted{
 
         display.setText("Challenging " + name + "...");
         aChallengerIsNear = new AChallengerIsNear(name, this);
-        aChallengerIsNear.execute((Void)null);
+        aChallengerIsNear.execute(this);
     }
 
     public void processFinish(String result) {
@@ -62,22 +62,22 @@ public class Connecting extends ActionBarActivity implements OnTaskCompleted{
         return super.onOptionsItemSelected(item);
     }
 
-    public class AChallengerIsNear extends AsyncTask<Void, Void, String> {
+    public class AChallengerIsNear extends AsyncTask<Context, Void, String> {
         private OnTaskCompleted listener;
-        private String name;
+        private String sendName;
 
         private BufferedReader in;
         String input = "";
         boolean isReady;
 
         AChallengerIsNear(String name, OnTaskCompleted listener)   {
-            this.name = name;
+            this.sendName = name;
             this.listener = listener;
+            Log.d("Construct", "Constructed");
         }
 
-        protected String doInBackground(Void... params) {
-            //TODO:assemble string here
-            //TODO: send TCP
+        protected String doInBackground(Context... params) {
+            Log.d("Background", "started");
 
             try {
 
@@ -86,7 +86,9 @@ public class Connecting extends ActionBarActivity implements OnTaskCompleted{
                 sendData.connectToServer();
                 in = sendData.getBufferReaderInstance();
                 //TODO: sendData.sendMessage();
-                sendData.sendMessage(name);
+                Log.d("Challenge", "Ready to send");
+                sendData.sendMessage(sendName);
+                Log.d("Challenge", "Sent " + sendName);
 
                 try {
 

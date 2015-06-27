@@ -49,7 +49,7 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                connectMe.cancel(true);
+                connectMe.onCancelled();
                 String name = newArray[position];
                 Intent intent = new Intent(getApplicationContext(),Connecting.class);
                 intent.putExtra("name", name);
@@ -63,9 +63,11 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
 
     public void processFinish(String output)   {
         //TODO: do something after the connection is established
-        Log.d("Received challenge", output);
+        //Log.d("Received challenge", output);
+
         if (Arrays.asList(newArray).contains(output)) {
             //TODO: Go to battle view
+
 
         }
 
@@ -102,47 +104,44 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
         boolean isReady;
         TCPClient sendData;
 
-        private LocationManager locationManager;
-
         ConnectMe(OnTaskCompleted listener)   {
             this.listener = listener;
         }
+
+        private boolean running = true;
 
         protected String doInBackground(Context... params) {
             //TODO:assemble string here
             //TODO: send TCP
 
-            try {
-
-                sendData = new TCPClient("192.168.43.101", 1235, listener);
-
-                sendData.connectToServer();
-                in = sendData.getBufferReaderInstance();
-                //TODO: sendData.sendMessage();
-
                 try {
 
-                    while (true) {
+                    sendData = new TCPClient("192.168.43.101", 1235, listener);
 
-                        isReady = in.ready();
-                        if (isReady){
-                            input = in.readLine();
-                            sendData.close();
-                            return input;
+                    sendData.connectToServer();
+                    in = sendData.getBufferReaderInstance();
+                    //TODO: sendData.sendMessage();
+
+                    try {
+
+                        while (running) {
+
+                            isReady = in.ready();
+                            if (isReady) {
+                                input = in.readLine();
+                                sendData.close();
+                                return input;
+                            }
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }
-                catch (IOException e) {
+
+
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            return null; //TODO: return string deliminated by ;
+                return null; //TODO: return string deliminated by ;
         }
 
         protected void onPostExecute(final String result)   {
@@ -151,6 +150,8 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
 
         @Override
         protected void onCancelled() {
+            running = false;
+            Log.d("Cancel", "Cancelled");
             try {
                 sendData.close();
             } catch (IOException e) {
