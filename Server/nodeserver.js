@@ -61,10 +61,14 @@ function callback(socket) {
 	
 	socket.on('end', function() {
 		console.log('disconnected from server');
-	
+
 		connection.end(function(err){
 			console.log("Connection terminated");
 		});
+		var idx = socketInstances.indexOf(socket);
+		if (idx != -1) {
+			delete socketInstances[idx];
+		}
 	});
 }
 
