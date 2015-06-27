@@ -6,15 +6,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Button;
+import android.graphics.PorterDuff;
 
 
 public class SetUpActivity extends ActionBarActivity {
 
     private int timeOption;
+    private EditText stepLength;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
+        stepLength = (EditText)findViewById(R.id.editText);
     }
 
     @Override
@@ -52,6 +57,30 @@ public class SetUpActivity extends ActionBarActivity {
     public void onProceed(View view){
         Intent i = new Intent(getApplicationContext(),ChallengeStart.class);
         i.putExtra("time",timeOption);
+        i.putExtra("length",Double.parseDouble(stepLength.getText().toString()));
         startActivity(i);
+    }
+
+    private void buttonPress(View view, int option){
+            view.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
+            Button bt1;
+            Button bt2;
+            switch(option){
+                case 1:
+                    bt1 = (Button)findViewById(R.id.Button2);
+                    bt2 = (Button)findViewById(R.id.Button5);
+                    break;
+                case 2:
+                    bt1 = (Button)findViewById(R.id.Button1);
+                    bt2 = (Button)findViewById(R.id.Button5);
+                    break;
+                case 5:
+                    bt1 = (Button)findViewById(R.id.Button1);
+                    bt2 = (Button)findViewById(R.id.Button2);
+                    break;
+            }
+            bt1.getBackground().clearColorFilter();
+            bt2.getBackground().clearColorFilter();
+
     }
 }

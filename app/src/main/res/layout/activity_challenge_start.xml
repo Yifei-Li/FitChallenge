@@ -26,17 +26,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:weightSum="14"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="4"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="60"
-                android:gravity="center"
+                android:gravity="right"
                 android:textSize="80dp"
-                android:id="@+id/textView3"
+                android:id="@+id/mins"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:textStyle="bold" />
@@ -44,70 +45,74 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="8"
-                android:text="s"
+                android:layout_weight="6"
+                android:text=":"
                 android:textSize="40dp"
-                android:gravity="bottom"
-                android:paddingBottom="40dp"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="60"
+                android:gravity="left"
+                android:textSize="80dp"
+                android:id="@+id/secs"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/infoView"/>
-
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp">
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="You have traveled:"
+            android:id="@+id/textView4"
+            android:textAlignment="center" />
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="60"
+            android:gravity="center"
+            android:textSize="80dp"
+            android:id="@+id/textView1"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="You have traveled:"
-                android:id="@+id/textView4"
-                android:textAlignment="center" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_weight="8"
+                android:text="m"
+                android:textSize="40dp"
+                android:gravity="bottom"
+                android:paddingBottom="95dp"/>
 
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="60"
-                    android:gravity="center"
-                    android:textSize="80dp"
-                    android:id="@+id/textView8"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:text="km"
-                    android:textSize="40dp"
-                    android:gravity="bottom"
-                    android:paddingBottom="40dp"/>
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

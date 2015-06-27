@@ -17,11 +17,15 @@ import android.hardware.Sensor;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
+
 
 public class ChallengeStart extends Activity implements SensorEventListener {
 
     private int duration;
+    private double stepLength;
     private TextView infoView;
+    private int iniCount = -1;
 
     private SensorManager mSensorManager;
     private Sensor mStepCounterSensor;
@@ -34,23 +38,35 @@ public class ChallengeStart extends Activity implements SensorEventListener {
         setContentView(R.layout.activity_challenge_start);
 
         Intent i = getIntent();
-        duration = i.getIntExtra("time",0) * 10000;
+        duration = i.getIntExtra("time",0) * 1000 * 60;
+        stepLength = i.getDoubleExtra("length",70);
         Log.d("duration",String.valueOf(duration));
+        Log.d("Length",String.valueOf(stepLength));
 
         mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mStepCounterSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         mStepDetectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
         //Start timer
-        final TextView timeDisp = (TextView)findViewById(R.id.textView3);
-        infoView = (TextView)findViewById(R.id.textView8);
+        final TextView minsDisp = (TextView)findViewById(R.id.mins);
+        final TextView secsDisp = (TextView)findViewById(R.id.secs);
+        infoView = (TextView)findViewById(R.id.textView1);
         new CountDownTimer(duration,1000){
 
             public void onTick(long millisTillFinished){
-                timeDisp.setText("" + millisTillFinished/1000);
+                long seconds = millisTillFinished/1000;
+                int minutes;
+                if(seconds >= 60){
+                    minutes = (int)(seconds / 60);
+                    seconds = seconds - (minutes * 60);
+                }else{
+                    minutes = 0;
+                }
+                minsDisp.setText("" + minutes);
+                secsDisp.setText("" + seconds);
             }
             public void onFinish() {
-                timeDisp.setText("done");
+                secsDisp.setText("0");
             }
         }.start();
     }
@@ -85,12 +101,16 @@ public class ChallengeStart extends Activity implements SensorEventListener {
 
         if(values.length > 0){
             value = (int)values[0];
+            iniCount = (iniCount == -1)? value: iniCount;
+            value -= iniCount;
         }
 
         if(sensor.getType() == Sensor.TYPE_STEP_COUNTER){
-            infoView.setText("Step Counter Detected " + value);
+            double dist = value * stepLength / 100;
+            DecimalFormat df = new DecimalFormat("#.#");
+            infoView.setText(df.format(dist));
         }else if(sensor.getType() == Sensor.TYPE_STEP_DETECTOR){
-            infoView.setText("Step Counter Detected " + value);
+            //infoView.setText("" + value);
         }
 
     }
