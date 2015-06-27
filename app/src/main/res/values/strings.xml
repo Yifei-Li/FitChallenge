@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FitChallenge</string>
+    <string name="title_activity_activity_selection">ActivitySelection</string>
+
+    <string name="activity_selection">Welcome! Please select one activity from below:</string>
+    <string name="action_settings">Settings</string>
 </resources>
