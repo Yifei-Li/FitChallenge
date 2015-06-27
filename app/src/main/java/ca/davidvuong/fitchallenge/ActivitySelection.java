@@ -13,8 +13,6 @@ public class ActivitySelection extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_selection);
     }
