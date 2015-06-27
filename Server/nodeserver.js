@@ -5,7 +5,8 @@ var connection = mysql.createConnection({
 	host : "localhost",
 	port : 1234,
 	user : "root",
-	password : "password"
+	password : "password",
+	multipleStatements: true
 });
 var networkInterfaces = os.networkInterfaces();
 var port = 1235;
@@ -27,6 +28,7 @@ function callback(socket) {
 		}else{
 			//if((data.toString()).includes("name")){
 				var names = "";
+				console.log(result.length);
 				for(var i = 0; i < result.length; i++){
 					names = names + ";" + result[i]['username'];
 				}
