@@ -18,7 +18,7 @@ import android.view.View;
 import android.content.Intent;
 import android.widget.Toast;
 
-public class ActivitySelection extends ActionBarActivity {
+public class ActivitySelection extends ActionBarActivity implements OnTaskCompleted{
 
     private String userName;
     private FindOthers findTask = null;
@@ -32,6 +32,11 @@ public class ActivitySelection extends ActionBarActivity {
         userName = i.getStringExtra("userName");
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+    }
+
+    public void processFinish(String output)   {
+        Log.d("Async", output);
     }
 
     @Override
@@ -63,12 +68,13 @@ public class ActivitySelection extends ActionBarActivity {
     }
 
     public void doRun(View view){
-        findTask = new FindOthers(userName, "run");
+        findTask = new FindOthers(userName, "run", this);
         findTask.execute(this);
     }
 
     public class FindOthers extends AsyncTask<Context, Void, String> implements LocationListener {
         private ProgressDialog dialog = new ProgressDialog(ActivitySelection.this);
+        private OnTaskCompleted listener;
 
         private double longitude;
         private double latitude;
@@ -76,9 +82,10 @@ public class ActivitySelection extends ActionBarActivity {
         private String user;
         private LocationManager locationManager;
 
-        FindOthers(String username, String chosenActivity)   {
+        FindOthers(String username, String chosenActivity, OnTaskCompleted listener)   {
             user = username;
             activity = chosenActivity;
+            this.listener = listener;
         }
 
         @Override
@@ -101,8 +108,8 @@ public class ActivitySelection extends ActionBarActivity {
             }
             Log.d("location", "longitude: " + longitude);
             Log.d("location", "latitude: " + latitude);
-            Context context = getApplicationContext();
-            Toast.makeText(context, "Location updated", Toast.LENGTH_SHORT);
+            listener.processFinish(result);
+
         }
 
         public void onLocationChanged(Location location) {
@@ -120,3 +127,4 @@ public class ActivitySelection extends ActionBarActivity {
 
     }
 }
+
