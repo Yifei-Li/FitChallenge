@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
 	password : "password",
 	multipleStatements: true
 });
-var socketInstances[];
+var socketInstances = [];
 var networkInterfaces = os.networkInterfaces();
 var port = 1235;
 connection.connect();
@@ -23,6 +23,7 @@ function callback(socket) {
 	var msg = "Connected: " +  remoteAddress +  " : " + remotePort;
 	console.log(msg);
 	socket.on('data', function(data) {
+		console.log(data.toString());
 		var strQuery = data.toString();
 		if (strQuery.indexOf(';') == -1) {
 			connection.query("select ip from users where username ='"+strQuery+"';", function (err, result) {
@@ -54,11 +55,16 @@ function callback(socket) {
 		
 	});
 	
+	socket.on('error', function() {
+		console.log("error occured.");
+	});
+	
 	socket.on('end', function() {
 		console.log('disconnected from server');
+	
 		connection.end(function(err){
-	  console.log("Connection terminated");
-  });
+			console.log("Connection terminated");
+		});
 	});
 }
 
