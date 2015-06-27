@@ -48,6 +48,10 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //TODO: send stuff to next activity
+                Intent i = new Intent(getApplicationContext(),ActivitySelection.class);
+                String email = mEmailView.getText().toString();
+                i.putExtra("userName",email);
+                startActivity(i);
             }
         });
 
