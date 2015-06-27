@@ -36,7 +36,10 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
     }
 
     public void processFinish(String output)   {
+
         Log.d("Async", output);
+        Intent intent = new Intent (this, UserList.class);
+        startActivity(intent);
     }
 
     @Override
@@ -72,11 +75,11 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
         findTask.execute(this);
     }
 
-    public void startComp(View view){
+    /*public void startComp(View view){
         Intent i = new Intent(getApplicationContext(),SetUpActivity.class);
         startActivity(i);
 
-    }
+    }*/
 
     public class FindOthers extends AsyncTask<Context, Void, String> implements LocationListener {
         private ProgressDialog dialog = new ProgressDialog(ActivitySelection.this);

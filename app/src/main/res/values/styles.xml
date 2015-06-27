@@ -5,5 +5,21 @@
         <!-- Customize your theme here. -->
     </style>
 
+        <!-- the theme applied to the application or activity -->
+        <style name="CustomActionBarTheme"
+            parent="@style/Theme.AppCompat.Light.DarkActionBar">
+            <item name="android:actionBarStyle">@style/MyActionBar</item>
+            <item name="actionBarStyle">@style/MyActionBar</item>
+        </style>
+
+    <color name="orange">#F89406</color>
+
+        <!-- ActionBar styles -->
+        <style name="MyActionBar"
+            parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+            <item name="android:background">@color/orange</item>
+            <item name="background">@color/orange</item>
+        </style>
+
 
 </resources>
