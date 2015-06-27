@@ -1,7 +1,14 @@
 package ca.davidvuong.fitchallenge;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
+import android.widget.Toast;
 
 public class ActivitySelection extends ActionBarActivity {
 
@@ -22,6 +30,8 @@ public class ActivitySelection extends ActionBarActivity {
 
         Intent i = getIntent();
         userName = i.getStringExtra("userName");
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
@@ -46,25 +56,29 @@ public class ActivitySelection extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void doRun(View view){
-        findTask = new FindOthers("jason", "run", 100, 100);
-        findTask.execute((Void) null);
-
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    public class FindOthers extends AsyncTask<Void, Void, String> {
+    public void doRun(View view){
+        findTask = new FindOthers(userName, "run");
+        findTask.execute(this);
+    }
+
+    public class FindOthers extends AsyncTask<Context, Void, String> implements LocationListener {
         private ProgressDialog dialog = new ProgressDialog(ActivitySelection.this);
 
-        private int longitude;
-        private int latitude;
+        private double longitude;
+        private double latitude;
         private String activity;
         private String user;
+        private LocationManager locationManager;
 
-        FindOthers(String username, String chosenActivity, int mlongitude, int mlatitude)   {
+        FindOthers(String username, String chosenActivity)   {
             user = username;
             activity = chosenActivity;
-            longitude = mlongitude;
-            latitude = mlatitude;
         }
 
         @Override
@@ -73,12 +87,11 @@ public class ActivitySelection extends ActionBarActivity {
                 this.dialog.show();
             }
 
-        protected String doInBackground(Void... params) {
-            try {
-                Thread.sleep(2000);
-            }   catch (InterruptedException e)  {
-                return "ugh";
-            }
+        protected String doInBackground(Context... params) {
+            locationManager = (LocationManager) params[0].getSystemService(Context.LOCATION_SERVICE);
+            Looper.prepare();
+            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+            Looper.loop();
             return "yay";
         }
 
@@ -86,8 +99,24 @@ public class ActivitySelection extends ActionBarActivity {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            Log.d("wtf", "done");
+            Log.d("location", "longitude: " + longitude);
+            Log.d("location", "latitude: " + latitude);
+            Context context = getApplicationContext();
+            Toast.makeText(context, "Location updated", Toast.LENGTH_SHORT);
         }
+
+        public void onLocationChanged(Location location) {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            Log.d("location:", "it changed");
+            Looper.myLooper().quit();
+            }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        public void onProviderEnabled(String provider) {}
+
+        public void onProviderDisabled(String provider) {}
 
     }
 }
