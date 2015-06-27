@@ -41,57 +41,20 @@ public class LoginActivity extends Activity {
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.name);
-        //populateAutoComplete();
 
         Button mEmailSignInButton = (Button) findViewById(R.id.next_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO: send stuff to next activity
-                Intent i = new Intent(getApplicationContext(),ActivitySelection.class);
+
+                Intent i = new Intent(getApplicationContext(), ActivitySelection.class);
                 String email = mEmailView.getText().toString();
-                i.putExtra("userName",email);
+                i.putExtra("userName", email);
                 startActivity(i);
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
     }
-/*
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
-    }*/
-
-
-    /*@Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        /*List<String> emails = new ArrayList<String>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);*/
-    }
-
-/*
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }*/
+}

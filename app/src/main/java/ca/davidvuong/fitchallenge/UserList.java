@@ -1,6 +1,13 @@
 package ca.davidvuong.fitchallenge;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +18,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class UserList extends ActionBarActivity {
+public class UserList extends ActionBarActivity implements OnTaskCompleted{
+
+    private ConnectMe connectMe;
+    String[] newArray = new String[0];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +37,11 @@ public class UserList extends ActionBarActivity {
 
         Intent i = getIntent();
         String input = i.getStringExtra("names");
+        String userName = i.getStringExtra("userName");
 
 
         String[] array = input.split(";", 10);
-        String[] newArray = Arrays.copyOfRange(array, 1, 8);
+        newArray = Arrays.copyOfRange(array, 1, 8);
         List<String> list = new ArrayList<String>(Arrays.asList(newArray));
         GridView grid = (GridView) findViewById(R.id.gridview);
         grid.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));
@@ -36,9 +49,28 @@ public class UserList extends ActionBarActivity {
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Log.d("Clicked", "Position: " + position);
+                connectMe.onCancelled();
+                String name = newArray[position];
+                Intent intent = new Intent(getApplicationContext(),Connecting.class);
+                intent.putExtra("name", name);
+                startActivity(intent);
             }
         });
+
+        connectMe = new ConnectMe(this);
+        connectMe.execute(this);
+    }
+
+    public void processFinish(String output)   {
+        //TODO: do something after the connection is established
+        //Log.d("Received challenge", output);
+
+        if (Arrays.asList(newArray).contains(output)) {
+            //TODO: Go to battle view
+
+
+        }
+
     }
 
     @Override
@@ -62,4 +94,70 @@ public class UserList extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    public class ConnectMe extends AsyncTask<Context, Void, String> {
+        private OnTaskCompleted listener;
+
+        private BufferedReader in;
+        String input = "";
+        boolean isReady;
+        TCPClient sendData;
+
+        ConnectMe(OnTaskCompleted listener)   {
+            this.listener = listener;
+        }
+
+        private boolean running = true;
+
+        protected String doInBackground(Context... params) {
+            //TODO:assemble string here
+            //TODO: send TCP
+
+                try {
+
+                    sendData = new TCPClient("192.168.43.101", 1235, listener);
+
+                    sendData.connectToServer();
+                    in = sendData.getBufferReaderInstance();
+                    //TODO: sendData.sendMessage();
+
+                    try {
+
+                        while (running) {
+
+                            isReady = in.ready();
+                            if (isReady) {
+                                input = in.readLine();
+                                sendData.close();
+                                return input;
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null; //TODO: return string deliminated by ;
+        }
+
+        protected void onPostExecute(final String result)   {
+            listener.processFinish(result);
+        }
+
+        @Override
+        protected void onCancelled() {
+            running = false;
+            Log.d("Cancel", "Cancelled");
+            try {
+                sendData.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

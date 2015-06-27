@@ -78,4 +78,8 @@ public class TCPClient  {
     public BufferedReader getBufferReaderInstance() {
         return in;
     }
+
+    public void close() throws IOException {
+        _clientInstance.close();
+    }
 }
