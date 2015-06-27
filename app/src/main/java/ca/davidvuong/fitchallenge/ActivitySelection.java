@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
-import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class ActivitySelection extends ActionBarActivity implements OnTaskCompleted{
 
@@ -37,6 +39,10 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
 
     public void processFinish(String output)   {
         Log.d("Async", output);
+        Intent i = new Intent(getApplicationContext(),UserList.class);
+        String pushy = output;
+        i.putExtra("names",pushy);
+        startActivity(i);
     }
 
     @Override
@@ -68,19 +74,23 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
     }
 
     public void doRun(View view){
-        findTask = new FindOthers(userName, "run", this);
+        findTask = new FindOthers(userName, "Running", this);
         findTask.execute(this);
     }
 
-    public void startComp(View view){
+    /*public void startComp(View view){
         Intent i = new Intent(getApplicationContext(),SetUpActivity.class);
         startActivity(i);
 
-    }
+    }*/
 
     public class FindOthers extends AsyncTask<Context, Void, String> implements LocationListener {
         private ProgressDialog dialog = new ProgressDialog(ActivitySelection.this);
         private OnTaskCompleted listener;
+
+        private BufferedReader in;
+        String input = "";
+        boolean isReady;
 
         private double longitude;
         private double latitude;
@@ -105,7 +115,51 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             Looper.prepare();
             locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
             Looper.loop();
-            return "yay";
+            //TODO:assemble string here
+            String send1 =  "INSERT INTO users values( '"+ user + "','" + activity + "'," + 0 + ");";
+            String send2 = "SELECT * FROM users;";
+            Log.d("sending string", send1);
+
+            //TODO: send TCP
+
+            try {
+
+                TCPClient sendData = new TCPClient("192.168.43.101", 1235, listener);
+
+                sendData.connectToServer();
+                in = sendData.getBufferReaderInstance();
+                sendData.sendMessage(send2);
+                try     {
+                    Thread.sleep(200);
+                } catch (InterruptedException e)    {
+                    return "nope";
+                }
+
+                sendData.sendMessage(send1);
+
+                try {
+
+                    while (true) {
+
+                        isReady = in.ready();
+                        if (isReady){
+                            input = in.readLine();
+                            Log.d("TEST", input);
+                            return input;
+                        }
+                    }
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null; //TODO: return string deliminated by ;
         }
 
         protected void onPostExecute(final String result)   {
@@ -114,6 +168,7 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             }
             Log.d("location", "longitude: " + longitude);
             Log.d("location", "latitude: " + latitude);
+            Log.d("result", result);
             listener.processFinish(result);
 
         }
@@ -122,6 +177,8 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             Log.d("location:", "it changed");
+            Log.d("location", "longitude: " + longitude);
+            Log.d("location", "latitude: " + latitude);
             Looper.myLooper().quit();
             }
 

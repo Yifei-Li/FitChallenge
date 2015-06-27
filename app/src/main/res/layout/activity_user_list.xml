@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.davidvuong.fitchallenge.UserList"
+    android:background="#FFFFFF"
+    android:nestedScrollingEnabled="false">
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="1"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:background="#ffb4b4b4"
+        android:layout_alignParentStart="true"
+        android:drawSelectorOnTop="false"
+        android:scrollingCache="false"
+        android:layout_alignParentEnd="true"
+        android:verticalSpacing="0.5dp" />
+
+</RelativeLayout>
