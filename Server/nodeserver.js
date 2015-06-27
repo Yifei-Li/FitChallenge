@@ -8,6 +8,7 @@ var connection = mysql.createConnection({
 	password : "password",
 	multipleStatements: true
 });
+var socketInstances[];
 var networkInterfaces = os.networkInterfaces();
 var port = 1235;
 connection.connect();
@@ -16,26 +17,40 @@ connection.query("use appusers");
 function callback(socket) {
 	var remoteAddress = socket.remoteAddress;
 	var remotePort = socket.remotePort;
-	
+	socketInstances.push(socket);
 	socket.setNoDelay(true);
 	
 	var msg = "Connected: " +  remoteAddress +  " : " + remotePort;
+	console.log(msg);
 	socket.on('data', function(data) {
 		var strQuery = data.toString();
-		connection.query( strQuery, function(err, result){
-		if(err)	{
-			throw err;
-		}else{
-			//if((data.toString()).includes("name")){
-				var names = "";
-				console.log(result.length);
-				for(var i = 0; i < result.length; i++){
-					names = names + ";" + result[i]['username'];
+		if (strQuery.indexOf(';') == -1) {
+			connection.query("select ip from users where username ='"+strQuery+"';", function (err, result) {
+				if (err){
+					throw err;
 				}
-				socket.write(names + ';'+ data.toString());
-			//}
+				else {
+					var ip = result[0];
+					console.log(ip);
+				}
+			});
 		}
-	  });
+		else {
+			connection.query( strQuery, function(err, result){
+			if(err)	{
+				throw err;
+			}else{
+				//if((data.toString()).includes("name")){
+					var names = "";
+					console.log(result.length);
+					for(var i = 0; i < result.length; i++){
+						names = names + ";" + result[i]['username'];
+					}
+					socket.write(names + ';'+ data.toString());
+				//}
+			}
+		  });
+		}
 		
 	});
 	
