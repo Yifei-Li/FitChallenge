@@ -25,14 +25,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
-//is this working?
-//Working
 
 /**
  * A login screen that offers login via email/password.
@@ -294,6 +293,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 Intent i = new Intent(getApplicationContext(),ActivitySelection.class);
                 startActivity(i);
                 finish();
+                Log.d("Login Result", "YES");
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
