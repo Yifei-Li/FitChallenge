@@ -38,10 +38,11 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
     }
 
     public void processFinish(String output)   {
-
         Log.d("Async", output);
-        Intent intent = new Intent (this, UserList.class);
-        startActivity(intent);
+        Intent i = new Intent(getApplicationContext(),UserList.class);
+        String pushy = output;
+        i.putExtra("names",pushy);
+        startActivity(i);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
     }
 
     public void doRun(View view){
-        findTask = new FindOthers(userName, "run", this);
+        findTask = new FindOthers(userName, "Running", this);
         findTask.execute(this);
     }
 
@@ -115,8 +116,9 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
             Looper.loop();
             //TODO:assemble string here
-            String send = "INSERT INTO users Values( '"+user + "','" + activity + "'," + 0 + ");";
-            Log.d("sending string", send);
+            String send1 =  "INSERT INTO users values( '"+ user + "','" + activity + "'," + 0 + ");";
+            String send2 = "SELECT * FROM users;";
+            Log.d("sending string", send1);
 
             //TODO: send TCP
 
@@ -126,7 +128,14 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
 
                 sendData.connectToServer();
                 in = sendData.getBufferReaderInstance();
-                sendData.sendMessage(send);
+                sendData.sendMessage(send2);
+                try     {
+                    Thread.sleep(200);
+                } catch (InterruptedException e)    {
+                    return "nope";
+                }
+
+                sendData.sendMessage(send1);
 
                 try {
 
@@ -159,6 +168,7 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             }
             Log.d("location", "longitude: " + longitude);
             Log.d("location", "latitude: " + latitude);
+            Log.d("result", result);
             listener.processFinish(result);
 
         }

@@ -1,9 +1,13 @@
 package ca.davidvuong.fitchallenge;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
@@ -19,10 +23,22 @@ public class UserList extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
 
-        String[] array = new String[] {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-        List<String> list = new ArrayList<String>(Arrays.asList(array));
+        Intent i = getIntent();
+        String input = i.getStringExtra("names");
+
+
+        String[] array = input.split(";", 10);
+        String[] newArray = Arrays.copyOfRange(array, 1, 8);
+        List<String> list = new ArrayList<String>(Arrays.asList(newArray));
         GridView grid = (GridView) findViewById(R.id.gridview);
         grid.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, list));
+
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Log.d("Clicked", "Position: " + position);
+            }
+        });
     }
 
     @Override
