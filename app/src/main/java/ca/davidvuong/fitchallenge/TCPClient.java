@@ -63,13 +63,19 @@ public class TCPClient  {
         _clientInstance = new Socket(_ipAddress, _port);
         in = new BufferedReader( new InputStreamReader(_clientInstance.getInputStream()));
 
-        t = new ListenForMessage(_listener);
-        t.execute();
+        //t = new ListenForMessage(_listener);
+        //t.execute();
 
         out = new PrintWriter(_clientInstance.getOutputStream(), true);
     }
 
     public void sendMessage(String msg) {
+        Log.d("Testing", "Sending...");
         out.println(msg);
+        Log.d("Testing", "Sent");
+    }
+
+    public BufferedReader getBufferReaderInstance() {
+        return in;
     }
 }

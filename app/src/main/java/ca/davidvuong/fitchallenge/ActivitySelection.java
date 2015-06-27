@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
-import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class ActivitySelection extends ActionBarActivity implements OnTaskCompleted{
 
@@ -85,6 +87,10 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
         private ProgressDialog dialog = new ProgressDialog(ActivitySelection.this);
         private OnTaskCompleted listener;
 
+        private BufferedReader in;
+        String input = "";
+        boolean isReady;
+
         private double longitude;
         private double latitude;
         private String activity;
@@ -108,7 +114,43 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             Looper.prepare();
             locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
             Looper.loop();
-            return "yay";
+            //TODO:assemble string here
+            String send = "INSERT INTO users Values( '"+user + "','" + activity + "'," + 0 + ");";
+            Log.d("sending string", send);
+
+            //TODO: send TCP
+
+            try {
+
+                TCPClient sendData = new TCPClient("192.168.43.101", 1235, listener);
+
+                sendData.connectToServer();
+                in = sendData.getBufferReaderInstance();
+                sendData.sendMessage(send);
+
+                try {
+
+                    while (true) {
+
+                        isReady = in.ready();
+                        if (isReady){
+                            input = in.readLine();
+                            Log.d("TEST", input);
+                            return input;
+                        }
+                    }
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null; //TODO: return string deliminated by ;
         }
 
         protected void onPostExecute(final String result)   {
@@ -125,6 +167,8 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             Log.d("location:", "it changed");
+            Log.d("location", "longitude: " + longitude);
+            Log.d("location", "latitude: " + latitude);
             Looper.myLooper().quit();
             }
 
