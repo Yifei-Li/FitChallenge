@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="ca.davidvuong.fitchallenge.SetUpActivity">
+
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="0.33"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout"
+        android:padding="@dimen/abc_action_bar_default_padding_material"
+        android:layout_marginTop="50dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageButton"
+            android:background="@android:color/holo_blue_dark"
+            android:layout_margin="@dimen/abc_action_bar_overflow_padding_start_material"
+            android:layout_weight="0.33"
+            android:onClick="setTimeOption1" />
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageButton2"
+            android:layout_weight="0.33"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="@dimen/abc_action_bar_overflow_padding_start_material"
+            android:onClick="setTimeOption2" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageButton3"
+            android:layout_weight="0.33"
+            android:layout_margin="@dimen/abc_action_bar_overflow_padding_start_material"
+            android:background="@android:color/holo_orange_dark"
+            android:onClick="setTimeOption3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.67"
+        android:layout_below="@+id/textView2"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_marginTop="130dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"></LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButton4"
+                android:onClick="onProceed"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"></LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
