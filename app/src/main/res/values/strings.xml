@@ -8,4 +8,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_challenge_start">ChallengeStart</string>
+    <string name="title_activity_connecting">Connecting</string>
 </resources>
