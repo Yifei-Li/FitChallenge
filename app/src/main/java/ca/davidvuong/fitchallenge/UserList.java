@@ -49,6 +49,7 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                connectMe.cancel(true);
                 String name = newArray[position];
                 Intent intent = new Intent(getApplicationContext(),Connecting.class);
                 intent.putExtra("name", name);
@@ -99,6 +100,7 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
         private BufferedReader in;
         String input = "";
         boolean isReady;
+        TCPClient sendData;
 
         private LocationManager locationManager;
 
@@ -112,7 +114,7 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
 
             try {
 
-                TCPClient sendData = new TCPClient("192.168.43.101", 1235, listener);
+                sendData = new TCPClient("192.168.43.101", 1235, listener);
 
                 sendData.connectToServer();
                 in = sendData.getBufferReaderInstance();
@@ -147,6 +149,14 @@ public class UserList extends ActionBarActivity implements OnTaskCompleted{
             listener.processFinish(result);
         }
 
+        @Override
+        protected void onCancelled() {
+            try {
+                sendData.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
