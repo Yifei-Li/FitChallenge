@@ -291,6 +291,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             if (success) {
                 Intent i = new Intent(getApplicationContext(),ActivitySelection.class);
+                i.putExtra("userName",mEmail);
                 startActivity(i);
                 finish();
                 Log.d("Login Result", "YES");

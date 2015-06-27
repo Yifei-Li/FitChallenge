@@ -1,20 +1,26 @@
 package ca.davidvuong.fitchallenge;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-
 public class ActivitySelection extends ActionBarActivity {
+
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_selection);
+
+        Intent i = getIntent();
+        userName = i.getStringExtra("userName");
     }
 
     @Override
@@ -40,6 +46,6 @@ public class ActivitySelection extends ActionBarActivity {
     }
 
     public void doRun(View view){
-
+        Log.d("name",userName);
     }
 }
