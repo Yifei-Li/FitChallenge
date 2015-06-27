@@ -72,6 +72,12 @@ public class ActivitySelection extends ActionBarActivity implements OnTaskComple
         findTask.execute(this);
     }
 
+    public void startComp(View view){
+        Intent i = new Intent(getApplicationContext(),SetUpActivity.class);
+        startActivity(i);
+
+    }
+
     public class FindOthers extends AsyncTask<Context, Void, String> implements LocationListener {
         private ProgressDialog dialog = new ProgressDialog(ActivitySelection.this);
         private OnTaskCompleted listener;
